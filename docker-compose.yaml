@@ -17,7 +17,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=usuario_uleam
-      - POSTGRES_PASSWORD=123456
+      - POSTGRES_PASSWORD=123456!
       - POSTGRES_DB=db_integracion
     ports:
       - "5432:5432"
