@@ -29,6 +29,8 @@ Invoke-Docker compose version
 Invoke-Docker pull redis:7-alpine
 Invoke-Docker pull postgres:16-alpine
 Invoke-Docker images
+Invoke-Docker image inspect redis:7-alpine
+# Para eliminar una imagen que ya no necesites: docker image rm NOMBRE:ETIQUETA
 
 # Comprobar que no se sobrescriban recursos de una ejecución anterior.
 $existente = & docker ps -aq --filter "name=^/${contenedorDemo}$"
@@ -55,6 +57,15 @@ Invoke-Docker exec $contenedorDemo redis-cli ping
 Invoke-Docker exec $contenedorDemo redis-cli set estudiante 'Luis Enrique Flores Toala'
 Invoke-Docker exec $contenedorDemo redis-cli get estudiante
 Invoke-Docker exec $contenedorDemo redis-cli save
+
+# Copiar el respaldo de Redis desde el contenedor al equipo y verificar que existe.
+$respaldoTemporal = [System.IO.Path]::GetTempFileName()
+try {
+    Invoke-Docker cp "${contenedorDemo}:/data/dump.rdb" $respaldoTemporal
+    Get-Item $respaldoTemporal | Select-Object Name, Length
+} finally {
+    Remove-Item -LiteralPath $respaldoTemporal -Force -ErrorAction SilentlyContinue
+}
 
 # Una consola dentro del contenedor puede abrirse con:
 # docker exec -it laboratorio-demo-redis sh
