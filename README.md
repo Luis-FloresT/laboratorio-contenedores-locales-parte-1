@@ -20,3 +20,28 @@ El primer comando de Redis debe responder `PONG` y la lectura de la clave debe d
 Las credenciales de PostgreSQL corresponden a la demostración y son solo para uso local de práctica. La contraseña configurada es `123456!`. La configuración no está destinada a producción.
 
 PostgreSQL aplica estas variables al inicializar un volumen vacío. Si ya existía el volumen de una ejecución anterior con otra contraseña, cambiar el archivo no modifica la contraseña de la base existente; hay que actualizarla por separado o comenzar con un volumen nuevo cuando los datos sean descartables.
+
+## Inspección de los contenedores
+
+Los siguientes comandos permiten revisar los elementos que se crean en la práctica:
+
+```sh
+docker images
+docker compose ps
+docker volume ls
+docker network ls
+docker logs compose-redis
+docker exec -it compose-redis sh
+```
+
+El último comando abre una consola dentro del contenedor de Redis; `exit` vuelve a la consola del equipo. Dentro del contenedor puede abrirse `redis-cli` para probar `PING`, `SET nombre Juan` y `GET nombre` (salir de Redis con `exit`). Los puertos publicados son 6379 para Redis y 5432 para PostgreSQL; deben estar disponibles en el equipo.
+
+## Comprobar la persistencia de Redis
+
+```sh
+docker exec compose-redis redis-cli set prueba_persistencia disponible
+docker compose restart cache-service
+docker exec compose-redis redis-cli get prueba_persistencia
+```
+
+La última orden debe devolver `disponible`. Redis guarda sus datos en `vol_compose_redis`, mientras que PostgreSQL utiliza `vol_compose_postgres`; ambos servicios comparten `red-infraestructura`. `docker compose down` conserva los volúmenes para volver a usarlos con `docker compose up -d`.
