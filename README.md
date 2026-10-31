@@ -15,7 +15,7 @@ docker exec compose-redis redis-cli get nombre
 docker exec compose-postgres psql -U usuario_uleam -d db_integracion -c 'SELECT current_database(), current_user;'
 ```
 
-El primer comando de Redis debe responder `PONG` y la lectura de la clave debe devolver `Juan`. El script `scripts/infraestructura.ps1` reúne estos pasos para PowerShell. Para detener los servicios sin borrar los datos, ejecutar `docker compose down`.
+El primer comando de Redis debe responder `PONG` y la lectura de la clave debe devolver `Juan`. El script `scripts/infraestructura.ps1` reúne la descarga, una demostración independiente, inspección, persistencia y el inicio con Compose. Usa el puerto 26379 para la demostración temporal y requiere que esté libre. Para detener los servicios sin borrar los datos, ejecutar `docker compose down`.
 
 Las credenciales de PostgreSQL corresponden a la demostración y son solo para uso local de práctica. La contraseña configurada es `123456!`. La configuración no está destinada a producción.
 
