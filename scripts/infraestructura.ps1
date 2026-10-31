@@ -48,6 +48,7 @@ Invoke-Docker run -d --name $contenedorDemo -p 26379:6379 -v "${volumenDemo}:/da
 # Listar contenedores, ver registros e inspeccionar el volumen y la red.
 Invoke-Docker ps -a
 Invoke-Docker logs $contenedorDemo
+# Para seguir los registros en vivo: docker logs -f laboratorio-demo-redis
 Invoke-Docker volume ls
 Invoke-Docker volume inspect $volumenDemo
 Invoke-Docker network ls
@@ -56,6 +57,9 @@ Invoke-Docker network ls
 Invoke-Docker exec $contenedorDemo redis-cli ping
 Invoke-Docker exec $contenedorDemo redis-cli set estudiante 'Luis Enrique Flores Toala'
 Invoke-Docker exec $contenedorDemo redis-cli get estudiante
+Invoke-Docker exec $contenedorDemo redis-cli set contador 0
+Invoke-Docker exec $contenedorDemo redis-cli incr contador
+Invoke-Docker exec $contenedorDemo redis-cli get contador
 Invoke-Docker exec $contenedorDemo redis-cli save
 
 # Copiar el respaldo de Redis desde el contenedor al equipo y verificar que existe.
